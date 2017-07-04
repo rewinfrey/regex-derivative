@@ -6,10 +6,10 @@ import Data.Function (fix)
 
 main :: IO ()
 main = do
-  putStrLn "Enter a character:"
+  putStrLn "Enter input string:"
   fix continue
   where
     continue loop = do
-      input <- getChar
-      putStrLn $ ": " ++ (show $ match (Character 'i') input)
+      input <- getLine
+      putStrLn (show $ match (Sequence (Character 'i') (Character 'j')) input)
       loop

@@ -1,6 +1,7 @@
 module Data.Regex where
 
 import Data.Bool
+import Data.List
 
 data Regex = Unmatchable
            | Empty
@@ -11,7 +12,9 @@ data Regex = Unmatchable
            | Repetition Regex
            deriving (Show, Eq)
 
-match :: Regex -> Char -> Bool
-match regex input = case regex of
-  Character char -> char == input
+match :: Regex -> String -> Bool
+match regex [] = False
+match regex input@(x:xs) = case regex of
+  Character char -> char == x
+  Sequence reg1 reg2 -> match reg1 input && match reg2 (tail input)
   _ -> False
