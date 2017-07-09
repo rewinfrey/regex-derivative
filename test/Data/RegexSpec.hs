@@ -12,3 +12,8 @@ spec =
     it "parses a single character regex" $ do
       result (Character 'a') "a" `shouldBe` True
       result (Character 'b') "a" `shouldBe` False
+
+    it "parses a single symbol regex" $ do
+      result (Symbol '$') "$" `shouldBe` True
+      result (Symbol '%') "$" `shouldBe` False
+
