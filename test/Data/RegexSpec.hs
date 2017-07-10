@@ -20,3 +20,7 @@ spec =
     it "parses an unmatchable regex" $ do
       result Unmatchable "" `shouldBe` False
       result Unmatchable "a" `shouldBe` False
+
+    it "parses a sequence of character regexes" $ do
+      result (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` True
+
