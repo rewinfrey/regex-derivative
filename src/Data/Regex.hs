@@ -16,6 +16,7 @@ match regex [] = case regex of
   Empty -> True
   _ -> False
 match regex input@(x:xs) = case regex of
+  Unmatchable -> False
   Empty -> False
   Character char -> char == x
   Sequence reg1 reg2 -> match reg1 input && match reg2 (tail input)
