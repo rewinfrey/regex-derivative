@@ -5,7 +5,6 @@ import Data.List
 
 data Regex = Unmatchable
            | Empty
-           | Symbol Char
            | Character Char
            | Alternation Regex Regex
            | Sequence Regex Regex
@@ -19,6 +18,5 @@ match regex [] = case regex of
 match regex input@(x:xs) = case regex of
   Empty -> False
   Character char -> char == x
-  Symbol char -> char == x
   Sequence reg1 reg2 -> match reg1 input && match reg2 (tail input)
   _ -> False

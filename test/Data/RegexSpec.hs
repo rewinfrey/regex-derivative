@@ -13,10 +13,6 @@ spec =
       result (Character 'a') "a" `shouldBe` True
       result (Character 'b') "a" `shouldBe` False
 
-    it "parses a single symbol regex" $ do
-      result (Symbol '$') "$" `shouldBe` True
-      result (Symbol '%') "$" `shouldBe` False
-
     it "allows empty regex" $ do
       result Empty "" `shouldBe` True
       result Empty "a" `shouldBe` False
