@@ -17,3 +17,7 @@ spec =
       result (Symbol '$') "$" `shouldBe` True
       result (Symbol '%') "$" `shouldBe` False
 
+    it "allows empty regex" $ do
+      result Empty "" `shouldBe` True
+      result Empty "a" `shouldBe` False
+
