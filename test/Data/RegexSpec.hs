@@ -31,3 +31,13 @@ spec =
 
         it "returns Error for single character mismatch" $
           derivativeString (Character 'a') "b" `shouldBe` Error
+
+      describe "Optional" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Optional (Character 'a')) "" `shouldBe` Optional (Character 'a')
+
+        it "returns Accepting for match" $
+          derivativeString (Optional (Character 'a')) "a" `shouldBe` Accepting
+
+        it "returns Error for mismatch" $
+          derivativeString (Optional (Character 'a')) "b" `shouldBe` Error
