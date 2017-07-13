@@ -31,13 +31,12 @@ isError _ = False
 
 isAccepting :: Regex -> Bool
 isAccepting Accepting = True
-isAccepting Error = False
-isAccepting (Character _) = False
 isAccepting (Optional _) = True
 isAccepting (Sequence r1 r2) = isAccepting r1 && isAccepting r2
 isAccepting (Not regex) | isAccepting regex = False
                         | isError regex = True
                         | otherwise = False
+isAccepting _ = False
 
 derivativeString :: Regex -> String -> Regex
 derivativeString regex input = foldl derivativeChar regex input
