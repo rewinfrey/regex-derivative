@@ -11,4 +11,5 @@ main = do
   where
     continue loop = do
       input <- getLine
+      print $ matches (Sequence (Character 'i') (Character 'j')) input
       loop
