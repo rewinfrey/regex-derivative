@@ -8,6 +8,7 @@ data Regex = Error
            | Character Char
            | Optional Regex
            | Sequence Regex Regex
+           | Repetition Regex
            | Not Regex
   deriving (Show, Eq)
 
@@ -23,6 +24,8 @@ derivativeChar (Sequence regex1 regex2) char | isAccepting regex1 = derivativeCh
 derivativeChar (Not regex) char | isAccepting (derivativeChar regex char) = Error
                                 | isError (derivativeChar regex char) = Accepting
                                 | otherwise = Error
+derivativeChar (Repetition regex) char | isAccepting (derivativeChar regex char) = (Repetition regex)
+                                       | otherwise = derivativeChar regex char
 
 isError :: Regex -> Bool
 isError Error = True
@@ -37,6 +40,9 @@ isAccepting (Not regex) | isAccepting regex = False
                         | isError regex = True
                         | otherwise = False
 isAccepting _ = False
+
+ofString :: String -> Regex
+ofString = undefined
 
 derivativeString :: Regex -> String -> Regex
 derivativeString regex input = foldl derivativeChar regex input

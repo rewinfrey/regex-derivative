@@ -64,6 +64,16 @@ spec =
           derivativeString (Not (Character 'a')) "a" `shouldBe` Error
           derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "ab" `shouldBe` Error
 
+      describe "Repitition" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Repetition (Character 'a')) "" `shouldBe` Repetition (Character 'a')
+
+        it "returns itself for match" $
+          derivativeString (Repetition (Character 'a')) "a" `shouldBe` Repetition (Character 'a')
+
+        it "returns Error for mismatch" $
+          derivativeString (Repetition (Character 'a')) "ab" `shouldBe` Error
+
     describe "matches" $ do
       it "returns True for valid matches" $ do
         result Accepting "" `shouldBe` True
@@ -72,6 +82,8 @@ spec =
         result (Optional (Character 'a')) "" `shouldBe` True
         result (Optional (Character 'a')) "a" `shouldBe` True
         result (Not (Character 'a')) "b" `shouldBe` True
+        result (Sequence (Repetition (Character 'a')) (Character 'c')) "aaac" `shouldBe` False
+        result (Sequence (Repetition (Character 'a')) (Sequence (Repetition (Character 'b')) (Character 'c'))) "aaabbbc" `shouldBe` False
 
       it "returns False for invalid matches" $ do
         result Accepting "a" `shouldBe` False
@@ -79,4 +91,6 @@ spec =
         result (Sequence (Character 'a') (Character 'b')) "ba" `shouldBe` False
         result (Optional (Character 'a')) "b" `shouldBe` False
         result (Not (Character 'a')) "a" `shouldBe` False
+        result (Sequence (Repetition (Character 'a')) (Character 'c')) "aaad" `shouldBe` False
+        result (Sequence (Repetition (Character 'a')) (Sequence (Repetition (Character 'b')) (Character 'c'))) "aaabbbd" `shouldBe` False
 
