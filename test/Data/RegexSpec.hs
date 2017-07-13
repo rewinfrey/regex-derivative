@@ -41,3 +41,14 @@ spec =
 
         it "returns Error for mismatch" $
           derivativeString (Optional (Character 'a')) "b" `shouldBe` Error
+
+      describe "Sequence" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Sequence (Character 'a') (Character 'b')) "" `shouldBe` Sequence (Character 'a') (Character 'b')
+
+        it "returns Accepting for match" $
+          derivativeString (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` Accepting
+
+        it "returns Error for mismatch" $ do
+          derivativeString (Sequence (Character 'a') (Character 'b')) "ac" `shouldBe` Error
+          derivativeString (Sequence (Character 'a') (Character 'b')) "cb" `shouldBe` Error

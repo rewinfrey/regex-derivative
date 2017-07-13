@@ -16,9 +16,13 @@ derivativeChar Accepting _ = Error
 derivativeChar (Character c) char | c == char = Accepting
                                   | otherwise = Error
 derivativeChar (Optional regex) char = derivativeChar regex char
+derivativeChar (Sequence regex1 regex2) char | isAccepting regex1 = derivativeChar regex2 char
+                                             | isError regex1 = Error
+                                             | otherwise = Sequence (derivativeChar regex1 char) regex2
 
 isError :: Regex -> Bool
 isError Error = True
+isError (Sequence r1 r2) = isError r1 || isError r2
 isError _ = False
 
 isAccepting :: Regex -> Bool
@@ -26,6 +30,7 @@ isAccepting Accepting = True
 isAccepting Error = False
 isAccepting (Character _) = False
 isAccepting (Optional _) = True
+isAccepting (Sequence r1 r2) = isAccepting r1 && isAccepting r2
 
 derivativeString :: Regex -> String -> Regex
 derivativeString regex input = foldl derivativeChar regex input
