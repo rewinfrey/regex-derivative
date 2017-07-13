@@ -21,3 +21,13 @@ spec =
 
         it "returns Error for non empty string" $
           derivativeString Accepting "a" `shouldBe` Error
+
+      describe "Character" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Character 'a') "" `shouldBe` Character 'a'
+
+        it "returns Accepting for single character match" $
+          derivativeString (Character 'a') "a" `shouldBe` Accepting
+
+        it "returns Error for single character mismatch" $
+          derivativeString (Character 'a') "b" `shouldBe` Error

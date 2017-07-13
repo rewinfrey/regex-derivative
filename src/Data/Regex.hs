@@ -12,6 +12,8 @@ data Regex = Error
 derivativeChar :: Regex -> Char -> Regex
 derivativeChar Error _ = Error
 derivativeChar Accepting _ = Error
+derivativeChar (Character c) char | c == char = Accepting
+                                  | otherwise = Error
 
 isError :: Regex -> Bool
 isError Error = True
@@ -19,6 +21,7 @@ isError Error = True
 isAccepting :: Regex -> Bool
 isAccepting Accepting = True
 isAccepting Error = False
+isAccepting (Character _) = False
 
 derivativeString :: Regex -> String -> Regex
 derivativeString regex input = foldl derivativeChar regex input
