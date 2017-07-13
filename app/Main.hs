@@ -11,5 +11,4 @@ main = do
   where
     continue loop = do
       input <- getLine
-      putStrLn (show $ match (Sequence (Character 'i') (Character 'j')) input)
       loop
