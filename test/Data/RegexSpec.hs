@@ -4,6 +4,7 @@ import Test.Hspec
 import Data.Regex
 
 result :: Regex -> String -> Bool
+result = matches
 
 spec :: Spec
 spec =
