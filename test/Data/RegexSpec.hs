@@ -52,3 +52,15 @@ spec =
         it "returns Error for mismatch" $ do
           derivativeString (Sequence (Character 'a') (Character 'b')) "ac" `shouldBe` Error
           derivativeString (Sequence (Character 'a') (Character 'b')) "cb" `shouldBe` Error
+
+      describe "Not" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Not (Character 'a')) "" `shouldBe` Not (Character 'a')
+
+        it "returns Accepting for match" $ do
+          derivativeString (Not (Character 'a')) "b" `shouldBe` Accepting
+          derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "b" `shouldBe` Accepting
+
+        it "returns Error for mismatch" $ do
+          derivativeString (Not (Character 'a')) "a" `shouldBe` Error
+          derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "ab" `shouldBe` Error
