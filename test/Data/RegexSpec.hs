@@ -15,4 +15,9 @@ spec =
         it "returns Error" $
           derivativeString Error "" `shouldBe` Error
 
+      describe "Accepting" $ do
+        it "returns Accepting for empty string" $
+          derivativeString Accepting "" `shouldBe` Accepting
 
+        it "returns Error for non empty string" $
+          derivativeString Accepting "a" `shouldBe` Error

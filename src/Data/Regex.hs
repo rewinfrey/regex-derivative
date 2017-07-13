@@ -4,17 +4,20 @@ import Data.Bool
 import Data.List
 
 data Regex = Error
+           | Accepting
            | Character Char
            | Sequence Regex Regex
   deriving (Show, Eq)
 
 derivativeChar :: Regex -> Char -> Regex
 derivativeChar Error _ = Error
+derivativeChar Accepting _ = Error
 
 isError :: Regex -> Bool
 isError Error = True
 
 isAccepting :: Regex -> Bool
+isAccepting Accepting = True
 isAccepting Error = False
 
 derivativeString :: Regex -> String -> Regex
