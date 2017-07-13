@@ -8,10 +8,8 @@ result = matches
 
 spec :: Spec
 spec =
-  describe "Data.Regex" $
-
+  describe "Data.Regex" $ do
     describe "derivativeString" $ do
-
       describe "Error" $
         it "returns Error" $
           derivativeString Error "" `shouldBe` Error
@@ -65,3 +63,20 @@ spec =
         it "returns Error for mismatch" $ do
           derivativeString (Not (Character 'a')) "a" `shouldBe` Error
           derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "ab" `shouldBe` Error
+
+    describe "matches" $ do
+      it "returns True for valid matches" $ do
+        result Accepting "" `shouldBe` True
+        result (Character 'a') "a" `shouldBe` True
+        result (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` True
+        result (Optional (Character 'a')) "" `shouldBe` True
+        result (Optional (Character 'a')) "a" `shouldBe` True
+        result (Not (Character 'a')) "b" `shouldBe` True
+
+      it "returns False for invalid matches" $ do
+        result Accepting "a" `shouldBe` False
+        result (Character 'a') "" `shouldBe` False
+        result (Sequence (Character 'a') (Character 'b')) "ba" `shouldBe` False
+        result (Optional (Character 'a')) "b" `shouldBe` False
+        result (Not (Character 'a')) "a" `shouldBe` False
+
