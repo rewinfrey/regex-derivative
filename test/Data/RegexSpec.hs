@@ -94,3 +94,29 @@ spec =
         result (Sequence (Repetition (Character 'a')) (Character 'c')) "aaad" `shouldBe` False
         result (Sequence (Repetition (Character 'a')) (Sequence (Repetition (Character 'b')) (Character 'c'))) "aaabbbd" `shouldBe` False
 
+    describe "anaRegex" $ do
+      it "returns Error for empty string" $
+        anaRegex "" `shouldBe` Error
+
+      it "returns Error for single *, ? and |" $ do
+        anaRegex "*" `shouldBe` Error
+        anaRegex "?" `shouldBe` Error
+        anaRegex "|" `shouldBe` Error
+
+      it "returns a Character for single character string" $
+        anaRegex "a" `shouldBe` Character 'a'
+
+      it "returns a Sequence of two single Character regexes" $
+        anaRegex "ab" `shouldBe` Sequence (Character 'a') (Character 'b')
+
+      it "returns a Sequence of Sequence for three single Character regexes" $
+        anaRegex "abc" `shouldBe` Sequence (Character 'a') (Sequence (Character 'b') (Character 'c'))
+
+      it "returns a Repetition for single character string" $
+        anaRegex "a*" `shouldBe` Repetition (Character 'a')
+
+      it "returns a Repetition for three character string" $
+        anaRegex "ab*" `shouldBe` Sequence (Character 'a') (Repetition (Character 'b'))
+
+      it "returns a Repetition for four character string" $
+        anaRegex "abc*" `shouldBe` Sequence (Character 'a') (Sequence (Character 'b') (Repetition (Character 'c')))
