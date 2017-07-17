@@ -42,9 +42,6 @@ isAccepting (Not regex) | isAccepting regex = False
                         | otherwise = False
 isAccepting _ = False
 
-ofString :: String -> Regex
-ofString = undefined
-
 derivativeString :: Regex -> String -> Regex
 derivativeString regex input = foldl derivativeChar regex input
 
