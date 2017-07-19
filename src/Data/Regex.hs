@@ -6,6 +6,7 @@ import Data.Set hiding (foldl)
 
 data Regex = Error
            | Accepting
+           | Alternation Regex Regex
            | Character Char
            | Optional Regex
            | Sequence Regex Regex
@@ -16,6 +17,9 @@ data Regex = Error
 derivativeChar :: Regex -> Char -> Regex
 derivativeChar Error _ = Error
 derivativeChar Accepting _ = Error
+derivativeChar (Alternation regex1 regex2) char | isAccepting regex1 = Accepting
+                                                | isError regex1 = derivativeChar regex2 char
+                                                | otherwise = derivativeChar (Alternation (derivativeChar regex1 char) regex2) char
 derivativeChar (Character c) char | c == char = Accepting
                                   | otherwise = Error
 derivativeChar (Optional regex) char = derivativeChar regex char
@@ -37,6 +41,7 @@ isAccepting :: Regex -> Bool
 isAccepting Accepting = True
 isAccepting (Optional _) = True
 isAccepting (Sequence r1 r2) = isAccepting r1 && isAccepting r2
+isAccepting (Alternation r1 r2) = isAccepting r1 || isAccepting r2
 isAccepting (Not regex) | isAccepting regex = False
                         | isError regex = True
                         | otherwise = False

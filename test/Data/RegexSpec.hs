@@ -21,6 +21,16 @@ spec =
         it "returns Error for non empty string" $
           derivativeString Accepting "a" `shouldBe` Error
 
+      describe "Alternation" $ do
+        it "returns original regex for empty string" $
+          derivativeString (Alternation (Character 'a') (Character 'b')) "" `shouldBe` Alternation (Character 'a') (Character 'b')
+
+        it "returns Accepting when left regex matches" $
+          derivativeString (Alternation (Character 'a') (Character 'b')) "a" `shouldBe` Accepting
+
+        it "returns Accepting when right regex matches" $
+          derivativeString (Alternation (Character 'a') (Character 'b')) "b" `shouldBe` Accepting
+
       describe "Character" $ do
         it "returns original regex for empty string" $
           derivativeString (Character 'a') "" `shouldBe` Character 'a'
