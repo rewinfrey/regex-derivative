@@ -48,7 +48,7 @@ isAccepting (Not regex) | isAccepting regex = False
 isAccepting _ = False
 
 derivativeString :: Regex -> String -> Regex
-derivativeString regex input = foldl derivativeChar regex input
+derivativeString = foldl derivativeChar
 
 matches :: Regex -> String -> Bool
 matches regex input = isAccepting $ derivativeString regex input
