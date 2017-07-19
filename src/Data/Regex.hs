@@ -29,7 +29,7 @@ derivativeChar (Sequence regex1 regex2) char | isAccepting regex1 = derivativeCh
 derivativeChar (Not regex) char | isAccepting (derivativeChar regex char) = Error
                                 | isError (derivativeChar regex char) = Accepting
                                 | otherwise = Error
-derivativeChar (Repetition regex) char | isAccepting (derivativeChar regex char) = (Repetition regex)
+derivativeChar (Repetition regex) char | isAccepting (derivativeChar regex char) = Repetition regex
                                        | otherwise = derivativeChar regex char
 
 isError :: Regex -> Bool
