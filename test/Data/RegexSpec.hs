@@ -16,27 +16,27 @@ spec =
 
       describe "Accepting" $ do
         it "returns Accepting for empty string" $
-          derivativeString Accepting "" `shouldBe` Accepting
+          derivativeString (Accepting "") "" `shouldBe` Accepting ""
 
         it "returns Error for non empty string" $
-          derivativeString Accepting "a" `shouldBe` Error
+          derivativeString (Accepting "") "a" `shouldBe` Error
 
       describe "Alternation" $ do
         it "returns original regex for empty string" $
           derivativeString (Alternation (Character 'a') (Character 'b')) "" `shouldBe` Alternation (Character 'a') (Character 'b')
 
         it "returns Accepting when left regex matches" $
-          derivativeString (Alternation (Character 'a') (Character 'b')) "a" `shouldBe` Accepting
+          derivativeString (Alternation (Character 'a') (Character 'b')) "a" `shouldBe` Accepting "a"
 
         it "returns Accepting when right regex matches" $
-          derivativeString (Alternation (Character 'a') (Character 'b')) "b" `shouldBe` Accepting
+          derivativeString (Alternation (Character 'a') (Character 'b')) "b" `shouldBe` Accepting "b"
 
       describe "Character" $ do
         it "returns original regex for empty string" $
           derivativeString (Character 'a') "" `shouldBe` Character 'a'
 
         it "returns Accepting for single character match" $
-          derivativeString (Character 'a') "a" `shouldBe` Accepting
+          derivativeString (Character 'a') "a" `shouldBe` Accepting "a"
 
         it "returns Error for single character mismatch" $
           derivativeString (Character 'a') "b" `shouldBe` Error
@@ -46,7 +46,7 @@ spec =
           derivativeString (Optional (Character 'a')) "" `shouldBe` Optional (Character 'a')
 
         it "returns Accepting for match" $
-          derivativeString (Optional (Character 'a')) "a" `shouldBe` Accepting
+          derivativeString (Optional (Character 'a')) "a" `shouldBe` Accepting "a"
 
         it "returns Error for mismatch" $
           derivativeString (Optional (Character 'a')) "b" `shouldBe` Error
@@ -56,7 +56,7 @@ spec =
           derivativeString (Sequence (Character 'a') (Character 'b')) "" `shouldBe` Sequence (Character 'a') (Character 'b')
 
         it "returns Accepting for match" $
-          derivativeString (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` Accepting
+          derivativeString (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` Accepting "ab"
 
         it "returns Error for mismatch" $ do
           derivativeString (Sequence (Character 'a') (Character 'b')) "ac" `shouldBe` Error
@@ -67,8 +67,8 @@ spec =
           derivativeString (Not (Character 'a')) "" `shouldBe` Not (Character 'a')
 
         it "returns Accepting for match" $ do
-          derivativeString (Not (Character 'a')) "b" `shouldBe` Accepting
-          derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "b" `shouldBe` Accepting
+          derivativeString (Not (Character 'a')) "b" `shouldBe` Accepting "b"
+          derivativeString (Not (Sequence (Character 'a') (Character 'b'))) "b" `shouldBe` Accepting "b"
 
         it "returns Error for mismatch" $ do
           derivativeString (Not (Character 'a')) "a" `shouldBe` Error
@@ -86,7 +86,7 @@ spec =
 
     describe "matches" $ do
       it "returns True for valid matches" $ do
-        result Accepting "" `shouldBe` True
+        result (Accepting "") "" `shouldBe` True
         result (Character 'a') "a" `shouldBe` True
         result (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` True
         result (Optional (Character 'a')) "" `shouldBe` True
@@ -96,7 +96,7 @@ spec =
         result (Sequence (Repetition (Character 'a')) (Sequence (Repetition (Character 'b')) (Character 'c'))) "aaabbbc" `shouldBe` False
 
       it "returns False for invalid matches" $ do
-        result Accepting "a" `shouldBe` False
+        result (Accepting "") "a" `shouldBe` False
         result (Character 'a') "" `shouldBe` False
         result (Sequence (Character 'a') (Character 'b')) "ba" `shouldBe` False
         result (Optional (Character 'a')) "b" `shouldBe` False
