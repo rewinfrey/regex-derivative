@@ -58,6 +58,9 @@ spec =
         it "returns Accepting for match" $
           derivativeString (Sequence (Character 'a') (Character 'b')) "ab" `shouldBe` Accepting "ab"
 
+        it "returns multiple matches" $
+          derivativeString (Sequence (Sequence (Character 'a') (Character 'b')) (Character 'c')) "abc" `shouldBe` Accepting "abc"
+
         it "returns Error for mismatch" $ do
           derivativeString (Sequence (Character 'a') (Character 'b')) "ac" `shouldBe` Error
           derivativeString (Sequence (Character 'a') (Character 'b')) "cb" `shouldBe` Error
